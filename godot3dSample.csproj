@@ -60,5 +60,30 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include=".mono\assemblies\GodotSharp.dll" />
+    <Content Include=".mono\assemblies\GodotSharp.pdb" />
+    <Content Include=".mono\assemblies\GodotSharp.xml" />
+    <Content Include=".mono\assemblies\GodotSharpEditor.dll" />
+    <Content Include=".mono\assemblies\GodotSharpEditor.pdb" />
+    <Content Include=".mono\assemblies\GodotSharpEditor.xml" />
+    <Content Include=".mono\temp\bin\Debug\godot3dSample.dll" />
+    <Content Include=".mono\temp\bin\Debug\godot3dSample.pdb" />
+    <Content Include=".mono\temp\bin\Debug\nunit.framework.dll" />
+    <Content Include=".mono\temp\bin\Debug\nunit.framework.xml" />
+    <Content Include=".mono\temp\bin\Tools\godot3dSample.dll" />
+    <Content Include=".mono\temp\bin\Tools\godot3dSample.pdb" />
+    <Content Include=".mono\temp\obj\Debug\godot3dSample.csproj.CopyComplete" />
+    <Content Include=".mono\temp\obj\Debug\godot3dSample.csproj.CoreCompileInputs.cache" />
+    <Content Include=".mono\temp\obj\Debug\godot3dSample.csproj.FileListAbsolute.txt" />
+    <Content Include=".mono\temp\obj\Debug\godot3dSample.csprojResolveAssemblyReference.cache" />
+    <Content Include=".mono\temp\obj\Debug\godot3dSample.dll" />
+    <Content Include=".mono\temp\obj\Debug\godot3dSample.pdb" />
+    <Content Include=".mono\temp\obj\Tools\godot3dSample.csproj.CoreCompileInputs.cache" />
+    <Content Include=".mono\temp\obj\Tools\godot3dSample.csproj.FileListAbsolute.txt" />
+    <Content Include=".mono\temp\obj\Tools\godot3dSample.csprojResolveAssemblyReference.cache" />
+    <Content Include=".mono\temp\obj\Tools\godot3dSample.dll" />
+    <Content Include=".mono\temp\obj\Tools\godot3dSample.pdb" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

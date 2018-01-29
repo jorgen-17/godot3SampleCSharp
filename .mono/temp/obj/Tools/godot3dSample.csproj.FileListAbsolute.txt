@@ -1,6 +1,0 @@
-/Users/jorgen/Projects/godotCSharp/godot3SampleCSharp2/.mono/temp/bin/Tools/godot3dSample.dll
-/Users/jorgen/Projects/godotCSharp/godot3SampleCSharp2/.mono/temp/bin/Tools/godot3dSample.pdb
-/Users/jorgen/Projects/godotCSharp/godot3SampleCSharp2/.mono/temp/obj/Tools/godot3dSample.csprojResolveAssemblyReference.cache
-/Users/jorgen/Projects/godotCSharp/godot3SampleCSharp2/.mono/temp/obj/Tools/godot3dSample.csproj.CoreCompileInputs.cache
-/Users/jorgen/Projects/godotCSharp/godot3SampleCSharp2/.mono/temp/obj/Tools/godot3dSample.dll
-/Users/jorgen/Projects/godotCSharp/godot3SampleCSharp2/.mono/temp/obj/Tools/godot3dSample.pdb
