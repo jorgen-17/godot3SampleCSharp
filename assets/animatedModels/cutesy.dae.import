@@ -6,7 +6,11 @@ path="res://.import/cutesy.dae-070d5565bb184ffce0b9ff4f15c61f13.scn"
 
 [deps]
 
+source_file="res://assets/animatedModels/cutesy.dae"
 source_md5="8fb9f44a74c1cdd1d49313021cafda61"
+
+dest_files=[ "res://.import/cutesy.dae-070d5565bb184ffce0b9ff4f15c61f13.scn" ]
+dest_md5="8403eff401b43aeac94944448ab96b2b"
 
 [params]
 

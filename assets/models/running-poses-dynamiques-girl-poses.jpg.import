@@ -6,7 +6,11 @@ path="res://.import/running-poses-dynamiques-girl-poses.jpg-305278120d2b228f300d
 
 [deps]
 
+source_file="res://assets/models/running-poses-dynamiques-girl-poses.jpg"
 source_md5="060fe7628fe82be12e895bbb6ee6614f"
+
+dest_files=[ "res://.import/running-poses-dynamiques-girl-poses.jpg-305278120d2b228f300dfc9dbe33c459.stex" ]
+dest_md5="31cf5dfb5007ec9f32c059dfc9f73b9b"
 
 [params]
 
