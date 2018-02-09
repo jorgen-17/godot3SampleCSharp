@@ -2,3 +2,4 @@
 .idea
 .import
 packages
+*/.DS_STORE
