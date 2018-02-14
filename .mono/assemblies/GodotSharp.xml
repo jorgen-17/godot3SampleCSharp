@@ -6678,8 +6678,8 @@
             For more information on Godot's UI system, anchors, margins, and containers, see the related tutorials in the manual. To build flexible UIs, you'll need a mix of UI elements that inherit from [code]Control[/code] and [Container] nodes.
             [b]User Interface nodes and input[/b]
             Godot sends input events to the scene's root node first, by calling [method Node._input]. [method Node._input] forwards the event down the node tree to the nodes under the mouse cursor, or on keyboard focus. To do so, it calls [method MainLoop._input_event]. Call [method accept_event] so no other node receives the event. Once you accepted an input, it becomes handled so [method Node._unhandled_input] will not process it.
-            Only one [code]Control[/code] node can be in keyboard focus. Only the node in focus will receive keyboard events. To get the focus, call [method set_focus_mode]. [code]Control[/code] nodes lose focus when another node grabs it, or if you hide the node in focus.
-            Call [method set_ignore_mouse] to tell a [code]Control[/code] node to ignore mouse or touch events. You'll need it if you place an icon on top of a button.
+            Only one [code]Control[/code] node can be in keyboard focus. Only the node in focus will receive keyboard events. To get the focus, call [method grab_focus]. [code]Control[/code] nodes lose focus when another node grabs it, or if you hide the node in focus.
+            Set [member mouse_filter] to MOUSE_FILTER_IGNORE to tell a [code]Control[/code] node to ignore mouse or touch events. You'll need it if you place an icon on top of a button.
             [Theme] resources change the Control's appearance. If you change the [Theme] on a [code]Control[/code] node, it affects all of its children. To override some of the theme's parameters, call one of the [code]add_*_override[/code] methods, like [method add_font_override]. You can override the theme with the inspector.
             </summary>
         </member>
@@ -9380,8 +9380,49 @@
             Return an Array containing the list of connections. A connection consists in a structure of the form {from_slot: 0, from: "GraphNode name 0", to_slot: 1, to: "GraphNode name 1" }
             </summary>
         </member>
+        <member name="M:Godot.GraphEdit.ClearConnections">
+            <summary>
+            Remove all connections between nodes.
+            </summary>
+        </member>
+        <member name="M:Godot.GraphEdit.AddValidRightDisconnectType(System.Int32)">
+            <summary>
+            Makes possible to disconnect nodes when dragging from the slot at the right if it has the specified type.
+            </summary>
+        </member>
+        <member name="M:Godot.GraphEdit.RemoveValidRightDisconnectType(System.Int32)">
+            <summary>
+            Removes the possibility to disconnect nodes when dragging from the slot at the right if it has the specified type.
+            </summary>
+        </member>
+        <member name="M:Godot.GraphEdit.AddValidLeftDisconnectType(System.Int32)">
+            <summary>
+            Makes possible to disconnect nodes when dragging from the slot at the left if it has the specified type.
+            </summary>
+        </member>
+        <member name="M:Godot.GraphEdit.RemoveValidLeftDisconnectType(System.Int32)">
+            <summary>
+            Removes the possibility to disconnect nodes when dragging from the slot at the left if it has the specified type.
+            </summary>
+        </member>
+        <member name="M:Godot.GraphEdit.AddValidConnectionType(System.Int32,System.Int32)">
+            <summary>
+            Makes possible the connection between two different slot types. The type is defined with the [method GraphNode.set_slot] method.
+            </summary>
+        </member>
+        <member name="M:Godot.GraphEdit.RemoveValidConnectionType(System.Int32,System.Int32)">
+            <summary>
+            Makes it not possible to connect between two different slot types. The type is defined with the [method GraphNode.set_slot] method.
+            </summary>
+        </member>
+        <member name="M:Godot.GraphEdit.IsValidConnectionType(System.Int32,System.Int32)">
+            <summary>
+            Returns whether it's possible to connect slots of the specified types.
+            </summary>
+        </member>
         <member name="M:Godot.GraphEdit.SetSelected(Godot.Node)">
             <summary>
+            Sets the specified [code]node[/code] as the one selected.
             </summary>
         </member>
         <member name="T:Godot.GraphNode">
@@ -9932,7 +9973,7 @@
         </member>
         <member name="M:Godot.Image.GetFormat">
             <summary>
-            Returns the image's raw data.
+            Returns the image’s format. See [code]FORMAT_*[/code] constants.
             </summary>
         </member>
         <member name="M:Godot.Image.GetData">
@@ -11098,7 +11139,7 @@
         </member>
         <member name="T:Godot.JSON">
             <summary>
-            Helper class for parsing JSON data. For usage example, see [JSONParseResult].
+            Helper class for parsing JSON data. For usage example and other important hints, see [JSONParseResult].
             </summary>
         </member>
         <member name="M:Godot.JSON.Print(System.Object,System.String,System.Boolean)">
@@ -11113,7 +11154,7 @@
         </member>
         <member name="T:Godot.JSONParseResult">
             <summary>
-            Returned by [method JSON.parse], [code]JSONParseResult[/code] contains decoded JSON or error information if JSON source not successfully parsed. You can check if JSON source was successfully parsed with [code]if json_result.error == 0[/code].
+            Returned by [method JSON.parse], [code]JSONParseResult[/code] contains decoded JSON or error information if JSON source not successfully parsed. You can check if JSON source was successfully parsed with [code]if json_result.error == OK[/code].
             </summary>
         </member>
         <member name="P:Godot.JSONParseResult.Error">
@@ -11134,11 +11175,12 @@
         <member name="P:Godot.JSONParseResult.Result">
             <summary>
             A [Variant] containing the parsed JSON. Use typeof() to check if it is what you expect. For example, if JSON source starts with curly braces ([code]{}[/code]) a [Dictionary] will be returned, if JSON source starts with braces ([code][][/code]) an [Array] will be returned.
-            [i]Be aware that the JSON specification does not define integer or float types, but only a number type. Therefore, parsing a JSON text will convert all numerical values to float types.[/i]
+            [i]Be aware that the JSON specification does not define integer or float types, but only a number type. Therefore, parsing a JSON text will convert all numerical values to float types.
+            Note that JSON objects do not preserve key order like Godot dictionaries, thus you should not rely on keys being in a certain order if a dictionary is constructed from JSON. In contrast, JSON arrays retain the order of their elements:[/i]
             [codeblock]
-            p = JSON.parse('["hello", "world", "!"]')
-            if typeof(p) == TYPE_ARRAY:
-            print(p[0]) # prints 'hello'
+            var p = JSON.parse('["hello", "world", "!"]')
+            if typeof(p.result) == TYPE_ARRAY:
+            print(p.result[0]) # prints 'hello'
             else:
             print("unexpected results")
             [/codeblock]
@@ -11191,7 +11233,7 @@
             [code]linear_velocity[/code] is a value in pixels per second. Unlike in for example [method move_and_collide], you should [i]not[/i] multiply it with [code]delta[/code] — this is done by the method.
             [code]floor_normal[/code] is the up direction, used to determine what is a wall and what is a floor or a ceiling. If set to the default value of [code]Vector3(0, 0, 0)[/code], everything is considered a wall. This is useful for topdown games.
             If the body is standing on a slope and the horizontal speed (relative to the floor's speed) goes below [code]slope_stop_min_velocity[/code], the body will stop completely. This prevents the body from sliding down slopes when you include gravity in [code]linear_velocity[/code]. When set to lower values, the body will not be able to stand still on steep slopes.
-            If the body collides, it will change direction a maximum of [code]max_bounces[/code] times before it stops.
+            If the body collides, it will change direction a maximum of [code]max_slides[/code] times before it stops.
             [code]floor_max_angle[/code] is the maximum angle (in radians) where a slope is still considered a floor (or a ceiling), rather than a wall. The default value equals 45 degrees.
             Returns the movement that remained when the body stopped. To get more detailed information about collisions that occurred, use [method get_slide_collision].
             &lt;param name="floorNormal"&gt;If the param is null, then the default value is new Vector3(0, 0, 0)&lt;/param&gt;
@@ -12517,8 +12559,30 @@
             <summary>
             </summary>
         </member>
+        <member name="M:Godot.NativeScript.GetClassDocumentation">
+            <summary>
+            Returns the documentation string that was previously set with [code]godot_nativescript_set_class_documentation[/code].
+            </summary>
+        </member>
+        <member name="M:Godot.NativeScript.GetMethodDocumentation(System.String)">
+            <summary>
+            Returns the documentation string that was previously set with [code]godot_nativescript_set_method_documentation[/code].
+            </summary>
+        </member>
+        <member name="M:Godot.NativeScript.GetSignalDocumentation(System.String)">
+            <summary>
+            Returns the documentation string that was previously set with [code]godot_nativescript_set_signal_documentation[/code].
+            </summary>
+        </member>
+        <member name="M:Godot.NativeScript.GetPropertyDocumentation(System.String)">
+            <summary>
+            Returns the documentation string that was previously set with [code]godot_nativescript_set_property_documentation[/code].
+            </summary>
+        </member>
         <member name="M:Godot.NativeScript.New(System.Object[])">
             <summary>
+            Constructs a new object of the base type with a script of this type already attached.
+            [i]Note[/i]: Any arguments passed to this function will be ignored and not passed to the native constructor function. This will change with in a future API extension.
             </summary>
         </member>
         <member name="T:Godot.Navigation">
@@ -20469,6 +20533,12 @@
             Disconnect from host.
             </summary>
         </member>
+        <member name="M:Godot.StreamPeerTCP.SetNoDelay(System.Boolean)">
+            <summary>
+            Disable Nagle algorithm to improve latency for small packets.
+            Note that for applications that send large packets, or need to transfer a lot of data, this can reduce total bandwidth.
+            </summary>
+        </member>
         <member name="T:Godot.StreamTexture">
             <summary>
             A texture that is loaded from a .stex file.
@@ -23088,98 +23158,122 @@
         </member>
         <member name="P:Godot.Viewport.Arvr">
             <summary>
+            If [code]true[/code] the viewport will be used in AR/VR process. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.Size">
             <summary>
+            The width and height of viewport.
             </summary>
         </member>
         <member name="P:Godot.Viewport.OwnWorld">
             <summary>
+            If [code]true[/code] the viewport will use [World] defined in [code]world[/code] property. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.World">
             <summary>
+            The custom [World] which can be used as 3D environment source.
             </summary>
         </member>
         <member name="P:Godot.Viewport.World2d">
             <summary>
+            The custom [World2D] which can be used as 2D environment source.
             </summary>
         </member>
         <member name="P:Godot.Viewport.TransparentBg">
             <summary>
+            If [code]true[/code] the viewport should render its background as transparent. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.Msaa">
             <summary>
+            The multisample anti-aliasing mode. Default value: [code]MSAA_DISABLED[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.Hdr">
             <summary>
+            If [code]true[/code] the viewport rendering will receive benefits from High Dynamic Range algorithm. Default value: [code]true[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.Disable3d">
             <summary>
+            If [code]true[/code] the viewport will disable 3D rendering. For actual disabling use [code]usage[/code]. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.Usage">
             <summary>
+            The rendering mode of viewport. Default value: [code]USAGE_3D[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.DebugDraw">
             <summary>
+            The overlay mode for test rendered geometry in debug purposes. Default value: [code]DEBUG_DRAW_DISABLED[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.RenderTargetVFlip">
             <summary>
+            If [code]true[/code] the result of rendering will be flipped vertically. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.RenderTargetClearMode">
             <summary>
+            The clear mode when viewport used as a render target. Default value: [code]CLEAR_MODE_ALWAYS[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.RenderTargetUpdateMode">
             <summary>
+            The update mode when viewport used as a render target. Default value: [code]UPDATE_WHEN_VISIBLE[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.AudioListenerEnable2d">
             <summary>
+            If [code]true[/code] the viewport will process 2D audio streams. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.AudioListenerEnable3d">
             <summary>
+            If [code]true[/code] the viewport will process 3D audio streams. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.PhysicsObjectPicking">
             <summary>
+            If [code]true[/code] the objects rendered by viewport become subjects of mouse picking process. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.GuiDisableInput">
             <summary>
+            If [code]true[/code] the viewport will not receive input event. Default value: [code]false[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.GuiSnapControlsToPixels">
             <summary>
+            If [code]true[/code] the GUI controls on the viewport will lay pixel perfectly. Default value: [code]true[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.ShadowAtlasSize">
             <summary>
+            The resolution of shadow atlas. Both width and height is equal to one value.
             </summary>
         </member>
         <member name="P:Godot.Viewport.ShadowAtlasQuad0">
             <summary>
+            The subdivision amount of first quadrant on shadow atlas. Default value: [code]SHADOW_ATLAS_QUADRANT_SUBDIV_4[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.ShadowAtlasQuad1">
             <summary>
+            The subdivision amount of second quadrant on shadow atlas. Default value: [code]SHADOW_ATLAS_QUADRANT_SUBDIV_4[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.ShadowAtlasQuad2">
             <summary>
+            The subdivision amount of third quadrant on shadow atlas. Default value: [code]SHADOW_ATLAS_QUADRANT_SUBDIV_16[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.ShadowAtlasQuad3">
             <summary>
+            The subdivision amount of fourth quadrant on shadow atlas. Default value: [code]SHADOW_ATLAS_QUADRANT_SUBDIV_64[/code].
             </summary>
         </member>
         <member name="P:Godot.Viewport.CanvasTransform">
@@ -23241,6 +23335,7 @@
         </member>
         <member name="M:Godot.Viewport.GetRenderInfo(Godot.Viewport.RenderInfo)">
             <summary>
+            Get the specific information about the viewport from rendering pipeline.
             </summary>
         </member>
         <member name="M:Godot.Viewport.GetTexture">
